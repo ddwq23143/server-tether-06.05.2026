@@ -25,38 +25,25 @@
 <div id="result"></div>
 
 <script>
-    // URL вашего API (проверьте порт - у вас 5058)
     const API_URL = 'http://localhost:5058/api/home/savemessage';
-
-    // Обработчик отправки формы
     document.getElementById('messageForm').addEventListener('submit', async function(event) {
-        event.preventDefault(); // Отменяем стандартную отправку формы
-
-        // Получаем данные из полей
+        event.preventDefault();
         const username = document.getElementById('username').value.trim();
         const message = document.getElementById('message').value.trim();
-
-        // Простая валидация
         if (!username || !message) {
             showResult('Пожалуйста, заполните все поля!', 'error');
             return;
         }
-
-        // Создаем FormData для отправки (соответствует [FromForm])
         const formData = new FormData();
-        formData.append('Username', username);  // Имя должно совпадать со свойством в модели C#
-        formData.append('Message', message);    // Имя должно совпадать со свойством в модели C#
-
+        formData.append('Username', username);
+        formData.append('Message', message); 
         try {
-            // Отправляем POST запрос на сервер
             const response = await fetch(API_URL, {
                 method: 'POST',
-                body: formData  // Отправляем как form-data
+                body: formData
             });
-
             if (response.ok) {
                 showResult(`✅ Успешно! Сообщение от "${username}" сохранено на сервере.`, 'success');
-                // Очищаем форму
                 document.getElementById('messageForm').reset();
             } else {
                 const errorText = await response.text();
@@ -67,20 +54,15 @@
             showResult(`❌ Не удалось соединиться с сервером. Убедитесь, что сервер запущен на ${API_URL}`, 'error');
         }
     });
-
     function showResult(message, type) {
         const resultDiv = document.getElementById('result');
         resultDiv.textContent = message;
         resultDiv.className = type;
         resultDiv.style.display = 'block';
-
-        // Скрываем сообщение через 5 секунд
         setTimeout(() => {
             resultDiv.style.display = 'none';
         }, 5000);
     }
-
-    // Проверка соединения с сервером при загрузке страницы (опционально)
     async function checkServerConnection() {
         try {
             const response = await fetch(API_URL, { method: 'OPTIONS' });
@@ -90,8 +72,6 @@
             showResult('⚠️ Сервер не запущен. Запустите ваш C# проект.', 'error');
         }
     }
-
-    // Проверяем соединение при загрузке
     checkServerConnection();
 </script>
 </body>
