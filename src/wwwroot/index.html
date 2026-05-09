@@ -7,7 +7,6 @@
 </head>
 <body>
 <h2>Отправить сообщение на сервер C#</h2>
-
 <form id="messageForm">
     <div class="form-group">
         <label for="username">Имя пользователя:</label>
@@ -18,12 +17,9 @@
         <label for="message">Сообщение:</label>
         <textarea id="message" name="Message" required></textarea>
     </div>
-
     <button type="submit">Отправить</button>
 </form>
-
 <div id="result"></div>
-
 <script>
     const API_URL = 'http://localhost:5058/api/home/savemessage';
     document.getElementById('messageForm').addEventListener('submit', async function(event) {
