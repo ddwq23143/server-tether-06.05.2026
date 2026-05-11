@@ -3,72 +3,455 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Отправка сообщений на C# API</title>
+    <title>Управление сообщениями</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .section {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+        input, textarea {
+            padding: 5px;
+            width: 300px;
+        }
+        textarea {
+            height: 80px;
+            vertical-align: top;
+        }
+        button {
+            padding: 8px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .delete-btn {
+            background: #dc3545;
+        }
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        .refresh-btn {
+            background: #28a745;
+        }
+        .refresh-btn:hover {
+            background: #218838;
+        }
+        .auto-refresh-btn {
+            background: #17a2b8;
+        }
+        .auto-refresh-btn.active {
+            background: #28a745;
+        }
+        .auto-refresh-btn.active:hover {
+            background: #218838;
+        }
+        .auto-refresh-btn:hover {
+            background: #138496;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            border-radius: 3px;
+            display: none;
+            z-index: 1000;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .id-input {
+            width: 150px;
+        }
+        hr {
+            margin: 20px 0;
+        }
+        .header-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .auto-refresh-status {
+            font-size: 12px;
+            color: #666;
+            margin-left: 10px;
+        }
+        .auto-refresh-status.active {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .last-update {
+            font-size: 12px;
+            color: #666;
+            margin-left: auto;
+        }
+    </style>
 </head>
 <body>
-<h2>Отправить сообщение на сервер C#</h2>
-<form id="messageForm">
-    <div class="form-group">
-        <label for="username">Имя пользователя:</label>
-        <input type="text" id="username" name="Username" required />
-    </div>
+<h1>📝 Управление сообщениями</h1>
 
+<!-- Отправка сообщения -->
+<div class="section">
+    <h2>✉️ Отправить сообщение</h2>
+    <form id="sendForm">
+        <div class="form-group">
+            <label>Имя пользователя:</label>
+            <input type="text" id="sendUsername" required>
+        </div>
+        <div class="form-group">
+            <label>Сообщение:</label>
+            <textarea id="sendMessage" required></textarea>
+        </div>
+        <button type="submit">📨 Отправить</button>
+    </form>
+</div>
+
+<!-- Удаление по ID -->
+<div class="section">
+    <h2>🗑️ Удалить сообщение</h2>
     <div class="form-group">
-        <label for="message">Сообщение:</label>
-        <textarea id="message" name="Message" required></textarea>
+        <label>ID сообщения:</label>
+        <input type="number" id="deleteId" class="id-input" placeholder="Введите ID">
+        <button id="deleteBtn" class="delete-btn">🗑️ Удалить</button>
     </div>
-    <button type="submit">Отправить</button>
-</form>
-<div id="result"></div>
+</div>
+
+<!-- Список сообщений -->
+<div class="section">
+    <h2>📋 Список сообщений</h2>
+    <div class="header-controls">
+        <div>
+            <button id="refreshBtn" class="refresh-btn">🔄 Обновить</button>
+            <button id="autoRefreshBtn" class="auto-refresh-btn" title="Автоматическое обновление каждые 5 секунд">
+                🔄 Автообновление: <span id="autoRefreshStatus">ВЫКЛ</span>
+            </button>
+        </div>
+        <div class="last-update" id="lastUpdateTime"></div>
+    </div>
+    <div id="messagesContainer">
+        <div class="loading">Загрузка...</div>
+    </div>
+</div>
+
+<div id="message" class="message"></div>
+
 <script>
-    const API_URL = 'http://localhost:5058/api/home/savemessage';
-    document.getElementById('messageForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const username = document.getElementById('username').value.trim();
-        const message = document.getElementById('message').value.trim();
-        if (!username || !message) {
-            showResult('Пожалуйста, заполните все поля!', 'error');
-            return;
+    // ИСПРАВЛЕННЫЙ URL - ваш реальный адрес сервера
+    const API_URL = 'http://192.168.0.132:5000/api/home';
+
+    // Переменные для автообновления
+    let autoRefreshInterval = null;
+    let isAutoRefreshEnabled = false;
+    let lastMessageCount = 0;
+
+    // Показать сообщение
+    function showMessage(text, type) {
+        const msgDiv = document.getElementById('message');
+        msgDiv.textContent = text;
+        msgDiv.className = `message ${type}`;
+        msgDiv.style.display = 'block';
+        setTimeout(() => {
+            msgDiv.style.display = 'none';
+        }, 3000);
+    }
+
+    // Обновление времени последнего обновления
+    function updateLastUpdateTime() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('ru-RU');
+        document.getElementById('lastUpdateTime').textContent = `Последнее обновление: ${timeStr}`;
+    }
+
+    // Загрузка сообщений с проверкой изменений
+    async function loadMessages(silent = false) {
+        const container = document.getElementById('messagesContainer');
+
+        if (!silent) {
+            container.innerHTML = '<div class="loading">Загрузка...</div>';
         }
-        const formData = new FormData();
-        formData.append('Username', username);
-        formData.append('Message', message); 
+
         try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                body: formData
-            });
-            if (response.ok) {
-                showResult(`✅ Успешно! Сообщение от "${username}" сохранено на сервере.`, 'success');
-                document.getElementById('messageForm').reset();
-            } else {
-                const errorText = await response.text();
-                showResult(`❌ Ошибка сервера: ${response.status} - ${errorText}`, 'error');
+            const response = await fetch(`${API_URL}/getmessages`);
+            const data = await response.json();
+
+            // Проверяем, что data - массив
+            if (!Array.isArray(data)) {
+                if (data && data.message) {
+                    if (!silent) {
+                        container.innerHTML = `<div style="color: #dc3545; padding: 10px;">⚠️ ${data.message}</div>`;
+                        showMessage(data.message, 'error');
+                    }
+                } else if (!silent) {
+                    container.innerHTML = '<div style="color: #dc3545; padding: 10px;">⚠️ Ошибка: сервер вернул неверный формат данных</div>';
+                    showMessage('Ошибка формата данных от сервера', 'error');
+                }
+                return;
             }
+
+            // Проверяем, изменилось ли количество сообщений
+            const hasNewMessages = data.length !== lastMessageCount;
+
+            // Если массив пуст
+            if (data.length === 0) {
+                if (!silent || lastMessageCount !== 0) {
+                    container.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">📭 Нет сообщений</div>';
+                    if (!silent && lastMessageCount > 0) {
+                        showMessage('Все сообщения удалены', 'info');
+                    }
+                }
+                lastMessageCount = 0;
+                updateLastUpdateTime();
+                return;
+            }
+
+            // Создаем таблицу
+            let html = '<table>';
+            html += '<thead><tr>';
+            html += '<th>ID</th><th>Пользователь</th><th>Сообщение</th><th>Дата</th><th>Действие</th>';
+            html += '</tr></thead><tbody>';
+
+            for (let msg of data) {
+                html += '<tr>';
+                html += `<td>${msg.id || msg.Id || '-'}</td>`;
+                html += `<td>${escapeHtml(msg.username || msg.Username || '-')}</td>`;
+                html += `<td>${escapeHtml(msg.message || msg.Message || '-')}</td>`;
+                html += `<td>${formatDate(msg.createdAt || msg.CreatedAt)}</td>`;
+                html += `<td><button onclick="deleteMessage(${msg.id || msg.Id})" class="delete-btn" style="padding: 3px 8px; font-size: 12px;">Удалить</button></td>`;
+                html += '</tr>';
+            }
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+
+            // Показываем уведомление о новых сообщениях при автообновлении
+            if (silent && hasNewMessages && data.length > lastMessageCount) {
+                const newCount = data.length - lastMessageCount;
+                showMessage(`📨 Новых сообщений: ${newCount}`, 'info');
+            }
+
+            lastMessageCount = data.length;
+            updateLastUpdateTime();
+
         } catch (error) {
             console.error('Ошибка:', error);
-            showResult(`❌ Не удалось соединиться с сервером. Убедитесь, что сервер запущен на ${API_URL}`, 'error');
+            if (!silent) {
+                container.innerHTML = `<div style="color: #dc3545; padding: 10px;">⚠️ Ошибка соединения: ${error.message}</div>`;
+                showMessage('Ошибка соединения с сервером', 'error');
+            }
+        }
+    }
+
+    // Экранирование HTML
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Форматирование даты
+    function formatDate(dateStr) {
+        if (!dateStr) return '-';
+        try {
+            const date = new Date(dateStr);
+            return date.toLocaleString('ru-RU');
+        } catch(e) {
+            return dateStr;
+        }
+    }
+
+    // Отправка сообщения
+    async function sendMessage(username, message) {
+        const formData = new FormData();
+        formData.append('Username', username);
+        formData.append('Message', message);
+
+        const response = await fetch(`${API_URL}/savemessage`, {
+            method: 'POST',
+            body: formData
+        });
+
+        return await response.json();
+    }
+
+    // Удаление сообщения
+    async function deleteMessage(id) {
+        if (!confirm(`Удалить сообщение с ID ${id}?`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/deletemessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                showMessage(`✅ ${data.message || 'Сообщение удалено'}`, 'success');
+                await loadMessages(false); // Полное обновление после удаления
+            } else {
+                showMessage(`❌ Ошибка: ${data.message || data.title || 'Неизвестная ошибка'}`, 'error');
+            }
+        } catch (error) {
+            showMessage(`❌ Ошибка: ${error.message}`, 'error');
+        }
+    }
+
+    // Включение/выключение автообновления
+    function toggleAutoRefresh() {
+        const btn = document.getElementById('autoRefreshBtn');
+        const statusSpan = document.getElementById('autoRefreshStatus');
+
+        if (isAutoRefreshEnabled) {
+            // Выключаем автообновление
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
+            isAutoRefreshEnabled = false;
+            statusSpan.textContent = 'ВЫКЛ';
+            btn.classList.remove('active');
+            showMessage('Автообновление выключено', 'info');
+        } else {
+            // Включаем автообновление
+            autoRefreshInterval = setInterval(() => {
+                loadMessages(true); // Тихая загрузка без индикатора
+            }, 500); // Обновление каждые 5 секунд
+
+            isAutoRefreshEnabled = true;
+            statusSpan.textContent = 'ВКЛ (5с)';
+            btn.classList.add('active');
+            showMessage('Автообновление включено (каждые 5 секунд)', 'success');
+        }
+    }
+
+    // Отправка формы
+    document.getElementById('sendForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById('sendUsername').value.trim();
+        const message = document.getElementById('sendMessage').value.trim();
+
+        if (!username || !message) {
+            showMessage('Заполните все поля!', 'error');
+            return;
+        }
+
+        try {
+            const result = await sendMessage(username, message);
+            showMessage(`✅ ${result.message || 'Сообщение отправлено!'}`, 'success');
+            document.getElementById('sendForm').reset();
+            await loadMessages(false); // Полное обновление после отправки
+        } catch (error) {
+            showMessage(`❌ Ошибка: ${error.message}`, 'error');
         }
     });
-    function showResult(message, type) {
-        const resultDiv = document.getElementById('result');
-        resultDiv.textContent = message;
-        resultDiv.className = type;
-        resultDiv.style.display = 'block';
-        setTimeout(() => {
-            resultDiv.style.display = 'none';
-        }, 5000);
-    }
-    async function checkServerConnection() {
-        try {
-            const response = await fetch(API_URL, { method: 'OPTIONS' });
-            console.log('Сервер доступен');
-        } catch (error) {
-            console.warn('Сервер не доступен. Запустите серверное приложение.');
-            showResult('⚠️ Сервер не запущен. Запустите ваш C# проект.', 'error');
+
+    // Удаление по ID из поля
+    document.getElementById('deleteBtn').addEventListener('click', async () => {
+        const id = parseInt(document.getElementById('deleteId').value);
+
+        if (isNaN(id) || id <= 0) {
+            showMessage('Введите корректный ID!', 'error');
+            return;
         }
-    }
-    checkServerConnection();
+
+        await deleteMessage(id);
+        document.getElementById('deleteId').value = '';
+    });
+
+    // Обновление списка (ручное)
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+        loadMessages(false);
+        showMessage('Список обновлен', 'info');
+    });
+
+    // Кнопка автообновления
+    document.getElementById('autoRefreshBtn').addEventListener('click', toggleAutoRefresh);
+
+    // Загружаем сообщения при открытии страницы
+    loadMessages(false);
+
+    // Останавливаем автообновление при закрытии страницы
+    window.addEventListener('beforeunload', () => {
+        if (autoRefreshInterval) {
+            clearInterval(autoRefreshInterval);
+        }
+    });
+
+    // Дополнительно: обновляем статус при возвращении на вкладку
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && isAutoRefreshEnabled) {
+            // Если вернулись на вкладку, сразу обновляем данные
+            loadMessages(true);
+        }
+    });
 </script>
 </body>
 </html>
