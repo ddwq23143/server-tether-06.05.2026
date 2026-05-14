@@ -2,456 +2,838 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Управление сообщениями</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Tether | Мессенджер</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            background: #eef2f5;
+            color: #111;
+            height: 100vh;
+            overflow: hidden;
         }
-        .section {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-        .section h2 {
-            margin-top: 0;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 10px;
-        }
-        label {
-            display: inline-block;
-            width: 120px;
-            font-weight: bold;
-        }
-        input, textarea {
-            padding: 5px;
-            width: 300px;
-        }
-        textarea {
-            height: 80px;
-            vertical-align: top;
-        }
-        button {
-            padding: 8px 15px;
-            margin-right: 10px;
-            cursor: pointer;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 3px;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .delete-btn {
-            background: #dc3545;
-        }
-        .delete-btn:hover {
-            background: #c82333;
-        }
-        .refresh-btn {
-            background: #28a745;
-        }
-        .refresh-btn:hover {
-            background: #218838;
-        }
-        .auto-refresh-btn {
-            background: #17a2b8;
-        }
-        .auto-refresh-btn.active {
-            background: #28a745;
-        }
-        .auto-refresh-btn.active:hover {
-            background: #218838;
-        }
-        .auto-refresh-btn:hover {
-            background: #138496;
-        }
-        table {
+
+        .container {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-        .message {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px;
-            border-radius: 3px;
-            display: none;
-            z-index: 1000;
-        }
-        .success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-        }
-        .id-input {
-            width: 150px;
-        }
-        hr {
-            margin: 20px 0;
-        }
-        .header-controls {
+
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            gap: 10px;
-            flex-wrap: wrap;
+            padding: 12px 24px;
+            background: #fff;
+            border-bottom: 1px solid #e6e8ea;
+            flex-shrink: 0;
         }
-        .auto-refresh-status {
-            font-size: 12px;
-            color: #666;
-            margin-left: 10px;
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #000;
         }
-        .auto-refresh-status.active {
-            color: #28a745;
-            font-weight: bold;
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
         }
-        .last-update {
-            font-size: 12px;
-            color: #666;
-            margin-left: auto;
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #d0d4d9;
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #111;
         }
+
+        .btn-outline:hover {
+            background: #f0f2f5;
+        }
+
+        .btn-primary {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .hero-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            flex: 1;
+            padding: 20px;
+        }
+
+        .hero-text h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .form-card {
+            background: #fff;
+            border: 1px solid #e0e4e8;
+            border-radius: 28px;
+            padding: 32px;
+            width: 400px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 14px;
+            padding: 6px 16px;
+            margin-top: 8px;
+        }
+
+        .input-wrapper i {
+            color: #6c757d;
+            margin-right: 10px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 0;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .btn-login, .btn-register {
+            width: 100%;
+            background: #000;
+            color: white;
+            padding: 14px;
+            border-radius: 28px;
+            font-weight: 600;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+
+        .toggle-link a {
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .messenger-container {
+            display: none;
+            flex: 1;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .messenger-layout {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 320px;
+            background: #fff;
+            border-right: 1px solid #e6e8ea;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #eef2f5;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .search-box {
+            padding: 12px 16px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px;
+            border-radius: 24px;
+            border: 1px solid #dee2e6;
+            background: #f8f9fa;
+            outline: none;
+        }
+
+        .chats-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .chat-item:hover {
+            background: #f4f5f7;
+        }
+
+        .chat-item.active {
+            background: #e9ecef;
+        }
+
+        .chat-avatar {
+            width: 44px;
+            height: 44px;
+            background: #d9dee3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #1e1e1e;
+            flex-shrink: 0;
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            min-width: 0;
+        }
+
+        .chat-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid #eef2f5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: #fff;
+        }
+
+        .message {
+            max-width: 65%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+        }
+
+        .message.received {
+            align-self: flex-start;
+        }
+
+        .message-bubble {
+            padding: 10px 16px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            word-wrap: break-word;
+        }
+
+        .message.sent .message-bubble {
+            background: #e4e6eb;
+            color: #000;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.received .message-bubble {
+            background: #f0f2f5;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+            margin-right: 6px;
+        }
+
+        .message-time {
+            font-size: 0.65rem;
+            color: #8e98a3;
+        }
+
+        .status-icon {
+            font-size: 0.7rem;
+        }
+
+        .status-sent { color: #8e98a3; }
+        .status-delivered { color: #5e5e5e; }
+        .status-read { color: #34b7f1; }
+
+        .message-input-area {
+            padding: 16px 24px;
+            border-top: 1px solid #eef2f5;
+            display: flex;
+            gap: 12px;
+            background: #fff;
+        }
+
+        .message-input-area input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 28px;
+            border: 1px solid #dee2e6;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .message-input-area button {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 0 24px;
+            border-radius: 28px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .empty-chat {
+            text-align: center;
+            color: #8e98a3;
+            margin-top: 40px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error-msg, .success-msg {
+            padding: 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-top: 12px;
+            text-align: center;
+        }
+        .error-msg { background: #fee2e2; color: #b91c1c; }
+        .success-msg { background: #dcfce7; color: #15803d; }
     </style>
 </head>
 <body>
-<h1>📝 Управление сообщениями</h1>
-
-<!-- Отправка сообщения -->
-<div class="section">
-    <h2>✉️ Отправить сообщение</h2>
-    <form id="sendForm">
-        <div class="form-group">
-            <label>Имя пользователя:</label>
-            <input type="text" id="sendUsername" required>
+<div class="container">
+    <nav class="navbar">
+        <div class="logo">Tether</div>
+        <div class="nav-buttons" id="navButtons">
+            <button class="btn-outline" id="showLoginNavBtn">Вход</button>
+            <button class="btn-primary" id="showSignupNavBtn">Регистрация</button>
         </div>
-        <div class="form-group">
-            <label>Сообщение:</label>
-            <textarea id="sendMessage" required></textarea>
+        <div class="nav-buttons hidden" id="navLoggedIn">
+            <span id="userWelcomeSpan" style="margin-right: 12px;"></span>
+            <button class="btn-outline" id="logoutBtn">Выйти</button>
         </div>
-        <button type="submit">📨 Отправить</button>
-    </form>
-</div>
+    </nav>
 
-<!-- Удаление по ID -->
-<div class="section">
-    <h2>🗑️ Удалить сообщение</h2>
-    <div class="form-group">
-        <label>ID сообщения:</label>
-        <input type="number" id="deleteId" class="id-input" placeholder="Введите ID">
-        <button id="deleteBtn" class="delete-btn">🗑️ Удалить</button>
+    <div class="hero-section" id="heroSection">
+        <div class="hero-text">
+            <h1>Простой и быстрый<br>мессенджер</h1>
+        </div>
+        <div class="form-card" id="loginFormCard">
+            <h3>Вход</h3>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Логин</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="loginUsername" placeholder="username">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Пароль</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="••••••">
+                    </div>
+                </div>
+                <button type="submit" class="btn-login">Войти</button>
+                <div class="toggle-link">
+                    Нет аккаунта? <a id="switchToSignup">Создать</a>
+                </div>
+                <div id="loginMessage"></div>
+            </form>
+        </div>
+        <div class="form-card hidden" id="signupFormCard">
+            <h3>Регистрация</h3>
+            <form id="signupForm">
+                <div class="input-group">
+                    <label>Имя</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signupUsername">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signupEmail">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Пароль</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="signupPassword">
+                    </div>
+                </div>
+                <button type="submit" class="btn-register">Зарегистрироваться</button>
+                <div class="toggle-link">
+                    Уже есть аккаунт? <a id="switchToLogin">Войти</a>
+                </div>
+                <div id="signupMessage"></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="messenger-container" id="messengerContainer">
+        <div class="messenger-layout">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Чаты</h2>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="searchUsers" placeholder="Поиск" onkeyup="filterUsers()">
+                </div>
+                <div class="chats-list" id="chatsList"></div>
+            </div>
+            <div class="chat-area">
+                <div class="chat-header" id="chatHeader">
+                    <div class="chat-avatar" id="chatAvatar">?</div>
+                    <strong id="chatUserName">Выберите чат</strong>
+                </div>
+                <div class="messages-area" id="messagesArea">
+                    <div class="empty-chat">Выберите диалог</div>
+                </div>
+                <div class="message-input-area" id="messageInputArea" style="display: none;">
+                    <input type="text" id="messageText" placeholder="Сообщение" onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button onclick="sendMessage()">→</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-<!-- Список сообщений -->
-<div class="section">
-    <h2>📋 Список сообщений</h2>
-    <div class="header-controls">
-        <div>
-            <button id="refreshBtn" class="refresh-btn">🔄 Обновить</button>
-            <button id="autoRefreshBtn" class="auto-refresh-btn" title="Автоматическое обновление каждые 5 секунд">
-                🔄 Автообновление: <span id="autoRefreshStatus">ВЫКЛ</span>
-            </button>
-        </div>
-        <div class="last-update" id="lastUpdateTime"></div>
-    </div>
-    <div id="messagesContainer">
-        <div class="loading">Загрузка...</div>
-    </div>
-</div>
-
-<div id="message" class="message"></div>
 
 <script>
-    // ИСПРАВЛЕННЫЙ URL - ваш реальный адрес сервера
-    const API_URL = 'http://192.168.0.132:5000/api/home';
+    const API_BASE = '/api/Home';
+    let currentUser = null;
+    let allUsers = [];
+    let selectedUser = null;
+    let pollInterval = null;
+    let readMessageIds = new Set(); // ID сообщений, которые уже отмечены как прочитанные
 
-    // Переменные для автообновления
-    let autoRefreshInterval = null;
-    let isAutoRefreshEnabled = false;
-    let lastMessageCount = 0;
+    function loadSession() {
+        const stored = localStorage.getItem('tether_session');
+        if(stored) {
+            try {
+                const s = JSON.parse(stored);
+                if(s.userId && s.username) {
+                    currentUser = s;
+                    showMessenger();
+                    loadUsers();
+                    startPolling();
+                } else showAuthForms();
+            } catch(e) { showAuthForms(); }
+        } else showAuthForms();
+    }
 
-    // Показать сообщение
-    function showMessage(text, type) {
-        const msgDiv = document.getElementById('message');
-        msgDiv.textContent = text;
-        msgDiv.className = `message ${type}`;
-        msgDiv.style.display = 'block';
-        setTimeout(() => {
-            msgDiv.style.display = 'none';
+    function showMessenger() {
+        document.getElementById('heroSection').style.display = 'none';
+        document.getElementById('messengerContainer').style.display = 'flex';
+        document.getElementById('navButtons').classList.add('hidden');
+        document.getElementById('navLoggedIn').classList.remove('hidden');
+        document.getElementById('userWelcomeSpan').innerText = currentUser.username;
+    }
+
+    function showAuthForms() {
+        document.getElementById('heroSection').style.display = 'flex';
+        document.getElementById('messengerContainer').style.display = 'none';
+        document.getElementById('navButtons').classList.remove('hidden');
+        document.getElementById('navLoggedIn').classList.add('hidden');
+        document.getElementById('loginFormCard').classList.remove('hidden');
+        document.getElementById('signupFormCard').classList.add('hidden');
+        if(pollInterval) clearInterval(pollInterval);
+        selectedUser = null;
+        readMessageIds.clear();
+    }
+
+    async function loadUsers() {
+        try {
+            const res = await fetch(`${API_BASE}/users`);
+            if(res.ok) allUsers = await res.json();
+            renderUsersList();
+        } catch(e) { console.error(e); }
+    }
+
+    function renderUsersList() {
+        const container = document.getElementById('chatsList');
+        const search = document.getElementById('searchUsers').value.toLowerCase();
+        const filtered = allUsers.filter(u => u.id !== currentUser?.userId && u.username.toLowerCase().includes(search));
+        if(!filtered.length) { container.innerHTML = '<div style="padding:20px">Нет пользователей</div>'; return; }
+        container.innerHTML = filtered.map(u => `
+            <div class="chat-item ${selectedUser?.id === u.id ? 'active' : ''}" onclick="selectUser(${u.id}, '${escapeHtml(u.username)}')">
+                <div class="chat-avatar">${u.username[0].toUpperCase()}</div>
+                <div><strong>${escapeHtml(u.username)}</strong></div>
+            </div>
+        `).join('');
+    }
+
+    function filterUsers() { renderUsersList(); }
+
+    function getStatusIcon(status) {
+        switch(status) {
+            case 'Sent': return '<i class="fas fa-check status-icon status-sent"></i>';
+            case 'Delivered': return '<i class="fas fa-check-double status-icon status-delivered"></i>';
+            case 'Read': return '<i class="fas fa-check-double status-icon status-read"></i>';
+            default: return '<i class="fas fa-check status-icon status-sent"></i>';
+        }
+    }
+
+    // ========== ТВОИ API ==========
+    async function callMarkDelivered(senderId, receiverId) {
+        try {
+            await fetch(`${API_BASE}/markDelivered?senderId=${senderId}&receiverId=${receiverId}`, { method: 'POST' });
+            return true;
+        } catch(e) { return false; }
+    }
+
+    async function callMarkRead(senderId, receiverId, messageId) {
+        try {
+            // markRead помечает ВСЕ сообщения от senderId к receiverId как прочитанные
+            await fetch(`${API_BASE}/markRead?senderId=${senderId}&receiverId=${receiverId}`, { method: 'POST' });
+            return true;
+        } catch(e) { return false; }
+    }
+
+    // Проверка видимости сообщений и отметка прочитанных
+    function checkVisibleMessages() {
+        if(!selectedUser) return;
+
+        const messagesArea = document.getElementById('messagesArea');
+        const messages = messagesArea.querySelectorAll('.message.received');
+        const scrollTop = messagesArea.scrollTop;
+        const clientHeight = messagesArea.clientHeight;
+
+        let maxVisibleMessageId = null;
+        let maxVisibleTimestamp = 0;
+
+        messages.forEach(msg => {
+            const rect = msg.getBoundingClientRect();
+            const containerRect = messagesArea.getBoundingClientRect();
+            const isVisible = rect.top >= containerRect.top && rect.top <= containerRect.bottom;
+
+            if(isVisible) {
+                const msgId = msg.getAttribute('data-msg-id');
+                if(msgId && !readMessageIds.has(msgId)) {
+                    const timestamp = parseInt(msg.getAttribute('data-timestamp') || '0');
+                    if(timestamp > maxVisibleTimestamp) {
+                        maxVisibleTimestamp = timestamp;
+                        maxVisibleMessageId = msgId;
+                    }
+                }
+            }
+        });
+
+        // Если есть видимое непрочитанное сообщение, отмечаем его и все предыдущие как прочитанные
+        if(maxVisibleMessageId) {
+            // Отмечаем через API все сообщения от этого пользователя
+            callMarkRead(selectedUser.id, currentUser.userId, maxVisibleMessageId).then(() => {
+                // Обновляем статусы в UI
+                setTimeout(() => loadMessages(true), 100);
+            });
+            readMessageIds.add(maxVisibleMessageId);
+        }
+    }
+
+    async function selectUser(userId, username) {
+        selectedUser = { id: userId, username };
+        document.getElementById('chatUserName').innerHTML = username;
+        document.getElementById('chatAvatar').innerHTML = username[0].toUpperCase();
+        document.getElementById('messageInputArea').style.display = 'flex';
+        renderUsersList();
+        readMessageIds.clear();
+
+        // При открытии чата отмечаем сообщения как доставленные (НО НЕ КАК ПРОЧИТАННЫЕ)
+        await callMarkDelivered(currentUser.userId, selectedUser.id);
+
+        await loadMessages(false);
+
+        // Добавляем обработчик скролла для отслеживания прочитанных сообщений
+        const messagesArea = document.getElementById('messagesArea');
+        messagesArea.removeEventListener('scroll', checkVisibleMessages);
+        messagesArea.addEventListener('scroll', () => {
+            setTimeout(checkVisibleMessages, 100);
+        });
+        setTimeout(checkVisibleMessages, 500);
+    }
+
+    async function loadMessages(keepPos = true) {
+        if(!selectedUser) return;
+
+        const area = document.getElementById('messagesArea');
+        let oldScrollTop = 0, oldScrollHeight = 0, wasNearBottom = false;
+
+        if(keepPos && area) {
+            oldScrollTop = area.scrollTop;
+            oldScrollHeight = area.scrollHeight;
+            wasNearBottom = (oldScrollHeight - oldScrollTop - area.clientHeight) < 80;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/getMessages?senderId=${currentUser.userId}&receiverId=${selectedUser.id}`);
+            const msgs = await res.json();
+
+            if(msgs.error || !Array.isArray(msgs)) return;
+
+            // Проверяем, есть ли новые сообщения
+            const existingIds = new Set();
+            document.querySelectorAll('.message[data-msg-id]').forEach(el => {
+                existingIds.add(el.getAttribute('data-msg-id'));
+            });
+
+            const newIds = new Set(msgs.map(m => m.id.toString()));
+            const hasNewMessages = existingIds.size !== newIds.size;
+
+            if(hasNewMessages) {
+                area.innerHTML = msgs.map(msg => {
+                    const isSent = msg.senderId === currentUser.userId;
+                    const time = new Date(msg.sendAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+                    const status = msg.status || 'Sent';
+                    const timestamp = new Date(msg.sendAt).getTime();
+
+                    return `
+                        <div class="message ${isSent ? 'sent' : 'received'}" data-msg-id="${msg.id}" data-timestamp="${timestamp}">
+                            <div class="message-bubble">${escapeHtml(msg.text)}</div>
+                            <div class="message-footer">
+                                <span class="message-time">${time}</span>
+                                ${isSent ? `<span class="status-icon">${getStatusIcon(status)}</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                // Обновляем только статусы отправленных сообщений
+                for(let msg of msgs) {
+                    if(msg.senderId === currentUser.userId) {
+                        const statusSpan = document.querySelector(`.message[data-msg-id="${msg.id}"] .status-icon`);
+                        if(statusSpan && msg.status) {
+                            const newIcon = getStatusIcon(msg.status);
+                            if(statusSpan.innerHTML !== newIcon) {
+                                statusSpan.innerHTML = newIcon;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(keepPos && area) {
+                if(wasNearBottom) {
+                    area.scrollTop = area.scrollHeight;
+                } else if(oldScrollTop > 0 && hasNewMessages) {
+                    area.scrollTop = oldScrollTop + (area.scrollHeight - oldScrollHeight);
+                }
+            }
+
+            // Проверяем видимые сообщения для отметки прочитанных
+            setTimeout(checkVisibleMessages, 100);
+
+        } catch(e) { console.error(e); }
+    }
+
+    async function sendMessage() {
+        const text = document.getElementById('messageText').value.trim();
+        if(!text || !selectedUser) return;
+
+        const tempId = 'temp_' + Date.now();
+        const time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        const area = document.getElementById('messagesArea');
+
+        const tempHtml = `
+            <div class="message sent" data-temp="${tempId}">
+                <div class="message-bubble">${escapeHtml(text)}</div>
+                <div class="message-footer">
+                    <span class="message-time">${time}</span>
+                    <span class="status-icon"><i class="fas fa-circle-notch fa-spin"></i></span>
+                </div>
+            </div>
+        `;
+        area.insertAdjacentHTML('beforeend', tempHtml);
+        area.scrollTop = area.scrollHeight;
+        document.getElementById('messageText').value = '';
+
+        try {
+            const res = await fetch(`${API_BASE}/sendMessage`, {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                    senderId: currentUser.userId,
+                    receiverId: selectedUser.id,
+                    text: text
+                })
+            });
+
+            if(res.ok) {
+                document.querySelector(`[data-temp="${tempId}"]`)?.remove();
+                await loadMessages(false);
+
+                // Отмечаем как доставленные (но не прочитанные)
+                setTimeout(async () => {
+                    await callMarkDelivered(currentUser.userId, selectedUser.id);
+                    await loadMessages(true);
+                }, 500);
+            } else {
+                const tempSpan = document.querySelector(`[data-temp="${tempId}"] .status-icon`);
+                if(tempSpan) tempSpan.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#b91c1c;"></i>';
+            }
+        } catch(e) { console.error(e); }
+    }
+
+    function startPolling() {
+        if(pollInterval) clearInterval(pollInterval);
+        pollInterval = setInterval(async () => {
+            if(selectedUser && currentUser) {
+                await loadMessages(true);
+                // Проверяем доставку
+                await callMarkDelivered(currentUser.userId, selectedUser.id);
+                // Проверяем прочитанные через видимость
+                checkVisibleMessages();
+            }
+            await loadUsers();
         }, 3000);
     }
 
-    // Обновление времени последнего обновления
-    function updateLastUpdateTime() {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('ru-RU');
-        document.getElementById('lastUpdateTime').textContent = `Последнее обновление: ${timeStr}`;
-    }
-
-    // Загрузка сообщений с проверкой изменений
-    async function loadMessages(silent = false) {
-        const container = document.getElementById('messagesContainer');
-
-        if (!silent) {
-            container.innerHTML = '<div class="loading">Загрузка...</div>';
-        }
-
+    async function signUpRequest(login, email, pwd) {
         try {
-            const response = await fetch(`${API_URL}/getmessages`);
-            const data = await response.json();
-
-            // Проверяем, что data - массив
-            if (!Array.isArray(data)) {
-                if (data && data.message) {
-                    if (!silent) {
-                        container.innerHTML = `<div style="color: #dc3545; padding: 10px;">⚠️ ${data.message}</div>`;
-                        showMessage(data.message, 'error');
-                    }
-                } else if (!silent) {
-                    container.innerHTML = '<div style="color: #dc3545; padding: 10px;">⚠️ Ошибка: сервер вернул неверный формат данных</div>';
-                    showMessage('Ошибка формата данных от сервера', 'error');
-                }
-                return;
-            }
-
-            // Проверяем, изменилось ли количество сообщений
-            const hasNewMessages = data.length !== lastMessageCount;
-
-            // Если массив пуст
-            if (data.length === 0) {
-                if (!silent || lastMessageCount !== 0) {
-                    container.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">📭 Нет сообщений</div>';
-                    if (!silent && lastMessageCount > 0) {
-                        showMessage('Все сообщения удалены', 'info');
-                    }
-                }
-                lastMessageCount = 0;
-                updateLastUpdateTime();
-                return;
-            }
-
-            // Создаем таблицу
-            let html = '<table>';
-            html += '<thead><tr>';
-            html += '<th>ID</th><th>Пользователь</th><th>Сообщение</th><th>Дата</th><th>Действие</th>';
-            html += '</tr></thead><tbody>';
-
-            for (let msg of data) {
-                html += '<tr>';
-                html += `<td>${msg.id || msg.Id || '-'}</td>`;
-                html += `<td>${escapeHtml(msg.username || msg.Username || '-')}</td>`;
-                html += `<td>${escapeHtml(msg.message || msg.Message || '-')}</td>`;
-                html += `<td>${formatDate(msg.createdAt || msg.CreatedAt)}</td>`;
-                html += `<td><button onclick="deleteMessage(${msg.id || msg.Id})" class="delete-btn" style="padding: 3px 8px; font-size: 12px;">Удалить</button></td>`;
-                html += '</tr>';
-            }
-
-            html += '</tbody></table>';
-            container.innerHTML = html;
-
-            // Показываем уведомление о новых сообщениях при автообновлении
-            if (silent && hasNewMessages && data.length > lastMessageCount) {
-                const newCount = data.length - lastMessageCount;
-                showMessage(`📨 Новых сообщений: ${newCount}`, 'info');
-            }
-
-            lastMessageCount = data.length;
-            updateLastUpdateTime();
-
-        } catch (error) {
-            console.error('Ошибка:', error);
-            if (!silent) {
-                container.innerHTML = `<div style="color: #dc3545; padding: 10px;">⚠️ Ошибка соединения: ${error.message}</div>`;
-                showMessage('Ошибка соединения с сервером', 'error');
-            }
-        }
-    }
-
-    // Экранирование HTML
-    function escapeHtml(text) {
-        if (!text) return '';
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
-    // Форматирование даты
-    function formatDate(dateStr) {
-        if (!dateStr) return '-';
-        try {
-            const date = new Date(dateStr);
-            return date.toLocaleString('ru-RU');
-        } catch(e) {
-            return dateStr;
-        }
-    }
-
-    // Отправка сообщения
-    async function sendMessage(username, message) {
-        const formData = new FormData();
-        formData.append('Username', username);
-        formData.append('Message', message);
-
-        const response = await fetch(`${API_URL}/savemessage`, {
-            method: 'POST',
-            body: formData
-        });
-
-        return await response.json();
-    }
-
-    // Удаление сообщения
-    async function deleteMessage(id) {
-        if (!confirm(`Удалить сообщение с ID ${id}?`)) {
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_URL}/deletemessage`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id: id })
+            const r = await fetch(`${API_BASE}/signUp`, {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ username:login, email, password:pwd })
             });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                showMessage(`✅ ${data.message || 'Сообщение удалено'}`, 'success');
-                await loadMessages(false); // Полное обновление после удаления
-            } else {
-                showMessage(`❌ Ошибка: ${data.message || data.title || 'Неизвестная ошибка'}`, 'error');
-            }
-        } catch (error) {
-            showMessage(`❌ Ошибка: ${error.message}`, 'error');
-        }
+            const d = await r.json();
+            if(r.ok) {
+                displayMessage('signupMessage', 'Успешно! Теперь войдите.', false);
+                setTimeout(() => { document.getElementById('switchToLogin').click(); }, 1300);
+            } else displayMessage('signupMessage', d.error || 'Ошибка', true);
+        } catch(e) { displayMessage('signupMessage', 'Ошибка сети', true); }
     }
 
-    // Включение/выключение автообновления
-    function toggleAutoRefresh() {
-        const btn = document.getElementById('autoRefreshBtn');
-        const statusSpan = document.getElementById('autoRefreshStatus');
-
-        if (isAutoRefreshEnabled) {
-            // Выключаем автообновление
-            if (autoRefreshInterval) {
-                clearInterval(autoRefreshInterval);
-                autoRefreshInterval = null;
-            }
-            isAutoRefreshEnabled = false;
-            statusSpan.textContent = 'ВЫКЛ';
-            btn.classList.remove('active');
-            showMessage('Автообновление выключено', 'info');
-        } else {
-            // Включаем автообновление
-            autoRefreshInterval = setInterval(() => {
-                loadMessages(true); // Тихая загрузка без индикатора
-            }, 500); // Обновление каждые 5 секунд
-
-            isAutoRefreshEnabled = true;
-            statusSpan.textContent = 'ВКЛ (5с)';
-            btn.classList.add('active');
-            showMessage('Автообновление включено (каждые 5 секунд)', 'success');
-        }
-    }
-
-    // Отправка формы
-    document.getElementById('sendForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const username = document.getElementById('sendUsername').value.trim();
-        const message = document.getElementById('sendMessage').value.trim();
-
-        if (!username || !message) {
-            showMessage('Заполните все поля!', 'error');
-            return;
-        }
-
+    async function signInRequest(login, pwd) {
         try {
-            const result = await sendMessage(username, message);
-            showMessage(`✅ ${result.message || 'Сообщение отправлено!'}`, 'success');
-            document.getElementById('sendForm').reset();
-            await loadMessages(false); // Полное обновление после отправки
-        } catch (error) {
-            showMessage(`❌ Ошибка: ${error.message}`, 'error');
-        }
+            const r = await fetch(`${API_BASE}/signIn`, {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ username:login, password:pwd })
+            });
+            const d = await r.json();
+            if(r.ok && d.userId) {
+                currentUser = { userId: d.userId, username: d.username };
+                localStorage.setItem('tether_session', JSON.stringify(currentUser));
+                showMessenger();
+                await loadUsers();
+                startPolling();
+            } else displayMessage('loginMessage', d.message || 'Ошибка входа', true);
+        } catch(e) { displayMessage('loginMessage', 'Сетевая ошибка', true); }
+    }
+
+    function displayMessage(containerId, msg, isErr) {
+        const c = document.getElementById(containerId);
+        c.innerHTML = `<div class="${isErr ? 'error-msg' : 'success-msg'}">${msg}</div>`;
+        setTimeout(() => c.innerHTML = '', 3000);
+    }
+
+    function escapeHtml(str) {
+        if(!str) return '';
+        return str.replace(/[&<>]/g, function(m){
+            if(m==='&') return '&amp;';
+            if(m==='<') return '&lt;';
+            if(m==='>') return '&gt;';
+            return m;
+        });
+    }
+
+    function logout() {
+        localStorage.clear();
+        currentUser = null;
+        selectedUser = null;
+        readMessageIds.clear();
+        if(pollInterval) clearInterval(pollInterval);
+        showAuthForms();
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        signInRequest(
+            document.getElementById('loginUsername').value.trim(),
+            document.getElementById('loginPassword').value
+        );
     });
 
-    // Удаление по ID из поля
-    document.getElementById('deleteBtn').addEventListener('click', async () => {
-        const id = parseInt(document.getElementById('deleteId').value);
-
-        if (isNaN(id) || id <= 0) {
-            showMessage('Введите корректный ID!', 'error');
-            return;
-        }
-
-        await deleteMessage(id);
-        document.getElementById('deleteId').value = '';
+    document.getElementById('signupForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        signUpRequest(
+            document.getElementById('signupUsername').value.trim(),
+            document.getElementById('signupEmail').value.trim(),
+            document.getElementById('signupPassword').value
+        );
     });
 
-    // Обновление списка (ручное)
-    document.getElementById('refreshBtn').addEventListener('click', () => {
-        loadMessages(false);
-        showMessage('Список обновлен', 'info');
-    });
+    document.getElementById('switchToSignup').onclick = () => {
+        document.getElementById('loginFormCard').classList.add('hidden');
+        document.getElementById('signupFormCard').classList.remove('hidden');
+    };
 
-    // Кнопка автообновления
-    document.getElementById('autoRefreshBtn').addEventListener('click', toggleAutoRefresh);
+    document.getElementById('switchToLogin').onclick = () => {
+        document.getElementById('signupFormCard').classList.add('hidden');
+        document.getElementById('loginFormCard').classList.remove('hidden');
+    };
 
-    // Загружаем сообщения при открытии страницы
-    loadMessages(false);
+    document.getElementById('showLoginNavBtn').onclick = () => document.getElementById('switchToLogin').click();
+    document.getElementById('showSignupNavBtn').onclick = () => document.getElementById('switchToSignup').click();
+    document.getElementById('logoutBtn').onclick = logout;
 
-    // Останавливаем автообновление при закрытии страницы
-    window.addEventListener('beforeunload', () => {
-        if (autoRefreshInterval) {
-            clearInterval(autoRefreshInterval);
-        }
-    });
-
-    // Дополнительно: обновляем статус при возвращении на вкладку
-    document.addEventListener('visibilitychange', () => {
-        if (!document.hidden && isAutoRefreshEnabled) {
-            // Если вернулись на вкладку, сразу обновляем данные
-            loadMessages(true);
-        }
-    });
+    loadSession();
 </script>
 </body>
 </html>
