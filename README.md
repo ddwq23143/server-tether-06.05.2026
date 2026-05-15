@@ -27,22 +27,14 @@ git clone https://github.com/ddwq23143/tether-messenger.git
 cd tether-backend
 ```
 2. **Настрой базу данных:**
-   Проект использует SQL Server. Создай базу данных (я использую Northwind от Microsoft) и выполни в ней SQL-запрос для создания таблицы:
-```sql
-CREATE TABLE Messages (
-    Id INT PRIMARY KEY IDENTITY(1,1),
-    Username NVARCHAR(100) NOT NULL,
-    Message NVARCHAR(MAX) NOT NULL,
-    CreatedAt DATETIME DEFAULT GETDATE()
-);
-```
+   Проект использует SQL Server. Тебе нужно создать таблицы Users и Messages
 3. **Настрой переменные окружения:**
    Создай файл `.env` в корневой папке проекта и скопируй туда настройки:
 ```sql
 SERVER_IP=127.0.0.1 //Твой IPv4 или localhost
 SERVER_PORT=5000
 DB_SOURCE=.
-DB_NAME=Northwind
+DB_NAME= //твоя бд
 DB_INTEGRATED_SECURITY=true
 DB_TRUST_CERTIFICATE=true
 ```
