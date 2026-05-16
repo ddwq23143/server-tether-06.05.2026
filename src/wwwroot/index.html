@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Tether | Мессенджер</title>
+
+    <link rel="icon" type="image/jpeg" href="/Assets/Icons/ico.jpg">
+    <link rel="apple-touch-icon" href="/Assets/Icons/ico.jpg">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -43,6 +47,31 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: #000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logo-img {
+            width: 34px;
+            height: 34px;
+            object-fit: cover;
+            border-radius: 10px;
+            background: #fff;
+            padding: 2px;
+            transition: transform 0.2s ease;
+        }
+
+        .logo:hover .logo-img {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            background: linear-gradient(135deg, #000 0%, #2d2d2d 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
         }
 
         .nav-buttons {
@@ -58,6 +87,7 @@
             font-weight: 500;
             cursor: pointer;
             color: #111;
+            transition: all 0.2s ease;
         }
 
         .btn-outline:hover {
@@ -72,6 +102,11 @@
             border-radius: 24px;
             font-weight: 500;
             cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1f1f1f;
         }
 
         .hero-section {
@@ -95,6 +130,11 @@
             border-radius: 28px;
             padding: 32px;
             width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        }
+
+        .form-card.hidden {
+            display: none;
         }
 
         .input-wrapper {
@@ -105,6 +145,12 @@
             border-radius: 14px;
             padding: 6px 16px;
             margin-top: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #000;
+            background: #fff;
         }
 
         .input-wrapper i {
@@ -131,6 +177,11 @@
             border: none;
             margin-top: 20px;
             cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-login:hover, .btn-register:hover {
+            background: #1f1f1f;
         }
 
         .toggle-link {
@@ -143,6 +194,7 @@
             color: #000;
             font-weight: 600;
             cursor: pointer;
+            text-decoration: underline;
         }
 
         .messenger-container {
@@ -169,6 +221,9 @@
         .sidebar-header {
             padding: 20px;
             border-bottom: 1px solid #eef2f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .sidebar-header h2 {
@@ -176,8 +231,25 @@
             font-weight: 600;
         }
 
+        .profile-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #6c757d;
+            transition: color 0.2s;
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .profile-btn:hover {
+            color: #000;
+            background: #f0f2f5;
+        }
+
         .search-box {
             padding: 12px 16px;
+            border-bottom: 1px solid #eef2f5;
         }
 
         .search-box input {
@@ -187,6 +259,13 @@
             border: 1px solid #dee2e6;
             background: #f8f9fa;
             outline: none;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .search-box input:focus {
+            border-color: #000;
+            background: #fff;
         }
 
         .chats-list {
@@ -200,7 +279,8 @@
             gap: 14px;
             padding: 12px 20px;
             cursor: pointer;
-            transition: 0.1s;
+            border-left: 3px solid transparent;
+            transition: all 0.15s ease;
         }
 
         .chat-item:hover {
@@ -209,6 +289,7 @@
 
         .chat-item.active {
             background: #e9ecef;
+            border-left: 3px solid #000;
         }
 
         .chat-avatar {
@@ -247,8 +328,23 @@
             padding: 20px 24px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
             background: #fff;
+        }
+
+        .message-new {
+            animation: messagePop 0.3s ease-out;
+        }
+
+        @keyframes messagePop {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .message {
@@ -320,6 +416,11 @@
             border: 1px solid #dee2e6;
             outline: none;
             font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .message-input-area input:focus {
+            border-color: #000;
         }
 
         .message-input-area button {
@@ -330,6 +431,11 @@
             border-radius: 28px;
             font-weight: 500;
             cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .message-input-area button:hover {
+            background: #1f1f1f;
         }
 
         .empty-chat {
@@ -339,7 +445,7 @@
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         .error-msg, .success-msg {
@@ -348,15 +454,234 @@
             font-size: 0.8rem;
             margin-top: 12px;
             text-align: center;
+            animation: fadeIn 0.3s ease;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         .error-msg { background: #fee2e2; color: #b91c1c; }
         .success-msg { background: #dcfce7; color: #15803d; }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid #eef2f5;
+            cursor: pointer;
+        }
+
+        .search-result-item:hover {
+            background: #f4f5f7;
+        }
+
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+            border-top: 1px solid #eef2f5;
+            background: #fff;
+        }
+
+        .start-chat-btn {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .start-chat-btn:hover {
+            background: #1f1f1f;
+        }
+
+        .section-title {
+            padding: 12px 16px 4px 16px;
+            font-size: 0.7rem;
+            color: #8e98a3;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 28px;
+            width: 450px;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #eef2f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+            padding: 0 8px;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .profile-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: #000;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0 auto 15px;
+        }
+
+        .profile-field {
+            margin-bottom: 20px;
+        }
+
+        .profile-field label {
+            display: block;
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .profile-field .value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #000;
+        }
+
+        .edit-btn {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 24px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .edit-btn:hover {
+            background: #1f1f1f;
+        }
+
+        .danger-btn {
+            background: #dc2626;
+        }
+
+        .danger-btn:hover {
+            background: #b91c1c;
+        }
+
+        .inline-form {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eef2f5;
+        }
+
+        .inline-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            outline: none;
+        }
+
+        .inline-form input:focus {
+            border-color: #000;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c7cd;
+            border-radius: 10px;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            z-index: 1100;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <nav class="navbar">
-        <div class="logo">Tether</div>
+        <div class="logo" onclick="window.location.reload()">
+            <img src="/Assets/Icons/ico.jpg" alt="Tether" class="logo-img"
+                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23000%22/%3E%3Ctext x=%2250%22 y=%2267%22 font-size=%2250%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Arial%22%3ET%3C/text%3E%3C/svg%3E'">
+            <span class="logo-text">Tether</span>
+        </div>
         <div class="nav-buttons" id="navButtons">
             <button class="btn-outline" id="showLoginNavBtn">Вход</button>
             <button class="btn-primary" id="showSignupNavBtn">Регистрация</button>
@@ -433,10 +758,15 @@
             <div class="sidebar">
                 <div class="sidebar-header">
                     <h2>Чаты</h2>
+                    <button class="profile-btn" onclick="showProfileModal()" title="Мой профиль">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
                 </div>
                 <div class="search-box">
-                    <input type="text" id="searchUsers" placeholder="Поиск" onkeyup="filterUsers()">
+                    <input type="text" id="searchUsers" placeholder="Поиск пользователей..." onkeyup="performSearch()">
                 </div>
+                <div id="searchResults" class="search-results" style="display: none;"></div>
+                <div class="section-title" id="chatsTitle">Ваши чаты</div>
                 <div class="chats-list" id="chatsList"></div>
             </div>
             <div class="chat-area">
@@ -449,9 +779,22 @@
                 </div>
                 <div class="message-input-area" id="messageInputArea" style="display: none;">
                     <input type="text" id="messageText" placeholder="Сообщение" onkeypress="if(event.key==='Enter') sendMessage()">
-                    <button onclick="sendMessage()">→</button>
+                    <button onclick="sendMessage()">Отправить</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Profile Modal -->
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Мой профиль</h3>
+            <button class="close-modal" onclick="closeProfileModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="profileModalBody">
+            <!-- Profile content loaded dynamically -->
         </div>
     </div>
 </div>
@@ -459,11 +802,241 @@
 <script>
     const API_BASE = '/api/Home';
     let currentUser = null;
-    let allUsers = [];
+    let chatUsers = [];
     let selectedUser = null;
     let pollInterval = null;
-    let readMessageIds = new Set(); // ID сообщений, которые уже отмечены как прочитанные
+    let readMessageIds = new Set();
+    let lastMessagesHash = '';
 
+    // Helper functions
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type === 'success' ? 'success-msg' : 'error-msg'}`;
+        notification.innerHTML = message;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+    }
+
+    // Profile functions
+    async function showProfileModal() {
+        if (!currentUser) return;
+
+        try {
+            const response = await fetch(`${API_BASE}/profile/${currentUser.userId}`);
+            const profile = await response.json();
+
+            if (response.ok) {
+                const modalBody = document.getElementById('profileModalBody');
+                modalBody.innerHTML = `
+                    <div class="profile-info">
+                        <div class="profile-avatar">${profile.username[0].toUpperCase()}</div>
+                        <h3>${escapeHtml(profile.username)}</h3>
+                        <p style="color: #6c757d; font-size: 0.9rem;">ID: ${profile.id}</p>
+                    </div>
+                    
+                    <div class="profile-field">
+                        <label>Email</label>
+                        <div class="value">${escapeHtml(profile.email)}</div>
+                    </div>
+                    
+                    <div class="profile-field">
+                        <label>Дата регистрации</label>
+                        <div class="value">${new Date(profile.createdAt).toLocaleDateString('ru-RU')}</div>
+                    </div>
+                    
+                    <div class="profile-field">
+                        <label>Последний вход</label>
+                        <div class="value">${profile.lastLoginAt ? new Date(profile.lastLoginAt).toLocaleString('ru-RU') : 'Не указано'}</div>
+                    </div>
+                    
+                    <button class="edit-btn" onclick="showEditUsernameForm()">✏️ Изменить имя пользователя</button>
+                    <button class="edit-btn" onclick="showChangePasswordForm()" style="margin-top: 10px;">🔒 Сменить пароль</button>
+                    
+                    <div id="editUsernameForm" style="display: none;" class="inline-form">
+                        <h4>Изменить имя пользователя</h4>
+                        <input type="text" id="newUsername" placeholder="Новое имя пользователя">
+                        <input type="password" id="usernamePassword" placeholder="Введите пароль для подтверждения">
+                        <button class="edit-btn" onclick="updateUsernameRequest()">Сохранить</button>
+                        <button class="edit-btn" onclick="hideEditUsernameForm()" style="background: #6c757d;">Отмена</button>
+                    </div>
+                    
+                    <div id="changePasswordForm" style="display: none;" class="inline-form">
+                        <h4>Смена пароля</h4>
+                        <input type="password" id="currentPassword" placeholder="Текущий пароль">
+                        <input type="password" id="newPassword" placeholder="Новый пароль (мин. 6 символов)">
+                        <input type="password" id="confirmPassword" placeholder="Подтвердите новый пароль">
+                        <button class="edit-btn" onclick="changePasswordRequest()">Сменить пароль</button>
+                        <button class="edit-btn" onclick="hideChangePasswordForm()" style="background: #6c757d;">Отмена</button>
+                    </div>
+                `;
+                document.getElementById('profileModal').classList.add('active');
+            } else {
+                showNotification(profile.error || 'Ошибка загрузки профиля', 'error');
+            }
+        } catch (error) {
+            console.error('Profile error:', error);
+            showNotification('Ошибка сети при загрузке профиля', 'error');
+        }
+    }
+
+    function closeProfileModal() {
+        document.getElementById('profileModal').classList.remove('active');
+    }
+
+    function showEditUsernameForm() {
+        document.getElementById('editUsernameForm').style.display = 'block';
+        document.getElementById('changePasswordForm').style.display = 'none';
+    }
+
+    function hideEditUsernameForm() {
+        document.getElementById('editUsernameForm').style.display = 'none';
+        document.getElementById('newUsername').value = '';
+        document.getElementById('usernamePassword').value = '';
+    }
+
+    function showChangePasswordForm() {
+        document.getElementById('changePasswordForm').style.display = 'block';
+        document.getElementById('editUsernameForm').style.display = 'none';
+    }
+
+    function hideChangePasswordForm() {
+        document.getElementById('changePasswordForm').style.display = 'none';
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+    }
+
+    async function updateUsernameRequest() {
+        const newUsername = document.getElementById('newUsername').value.trim();
+        const password = document.getElementById('usernamePassword').value;
+
+        if (!newUsername || newUsername.length < 3) {
+            showNotification('Имя пользователя должно содержать минимум 3 символа', 'error');
+            return;
+        }
+
+        if (!password) {
+            showNotification('Введите пароль для подтверждения', 'error');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/updateUsername`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: currentUser.userId,
+                    newUsername: newUsername,
+                    password: password
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                currentUser.username = newUsername;
+                localStorage.setItem('tether_session', JSON.stringify(currentUser));
+                document.getElementById('userWelcomeSpan').innerText = currentUser.username;
+
+                if (selectedUser && selectedUser.id === currentUser.userId) {
+                    document.getElementById('chatUserName').innerHTML = currentUser.username;
+                    document.getElementById('chatAvatar').innerHTML = currentUser.username[0].toUpperCase();
+                }
+
+                showNotification('Имя пользователя успешно обновлено!', 'success');
+                closeProfileModal();
+                loadChatUsers();
+                setTimeout(() => showProfileModal(), 500);
+            } else {
+                showNotification(data.error || 'Ошибка обновления имени', 'error');
+            }
+        } catch (error) {
+            showNotification('Ошибка сети', 'error');
+        }
+    }
+
+    async function changePasswordRequest() {
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (!currentPassword) {
+            showNotification('Введите текущий пароль', 'error');
+            return;
+        }
+
+        if (!newPassword || newPassword.length < 6) {
+            showNotification('Новый пароль должен содержать минимум 6 символов', 'error');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            showNotification('Пароли не совпадают', 'error');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/changePassword`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: currentUser.userId,
+                    currentPassword: currentPassword,
+                    newPassword: newPassword
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                showNotification('Пароль успешно изменён!', 'success');
+                closeProfileModal();
+                hideChangePasswordForm();
+            } else {
+                showNotification(data.error || 'Ошибка смены пароля', 'error');
+            }
+        } catch (error) {
+            showNotification('Ошибка сети', 'error');
+        }
+    }
+
+    // Improved logout with lastLogoutAt update
+    async function logout() {
+        if (currentUser) {
+            try {
+                await fetch(`${API_BASE}/logout`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.userId })
+                });
+            } catch (e) {
+                console.error('Logout error:', e);
+            }
+        }
+
+        localStorage.clear();
+        currentUser = null;
+        selectedUser = null;
+        readMessageIds.clear();
+        if (pollInterval) clearInterval(pollInterval);
+        showAuthForms();
+        showNotification('Вы вышли из системы', 'success');
+    }
+
+    // Update last login on successful sign in
+    async function updateLastLogin(userId) {
+        try {
+            await fetch(`${API_BASE}/updateLastLogin`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userId)
+            });
+        } catch (e) {
+            console.error('Update last login error:', e);
+        }
+    }
+
+    // Existing functions with improvements
     function loadSession() {
         const stored = localStorage.getItem('tether_session');
         if(stored) {
@@ -472,8 +1045,9 @@
                 if(s.userId && s.username) {
                     currentUser = s;
                     showMessenger();
-                    loadUsers();
+                    loadChatUsers();
                     startPolling();
+                    updateLastLogin(currentUser.userId);
                 } else showAuthForms();
             } catch(e) { showAuthForms(); }
         } else showAuthForms();
@@ -499,28 +1073,103 @@
         readMessageIds.clear();
     }
 
-    async function loadUsers() {
+    async function loadChatUsers() {
+        if (!currentUser) return;
+
         try {
-            const res = await fetch(`${API_BASE}/users`);
-            if(res.ok) allUsers = await res.json();
-            renderUsersList();
-        } catch(e) { console.error(e); }
+            const res = await fetch(`${API_BASE}/searchUsers?currentUserId=${currentUser.userId}`);
+            if(res.ok) {
+                const allUsers = await res.json();
+                const newChatUsers = allUsers.filter(u => u.hasChat === true);
+
+                const newIds = newChatUsers.map(u => u.id).sort().join(',');
+                const oldIds = chatUsers.map(u => u.id).sort().join(',');
+
+                if (newIds !== oldIds) {
+                    chatUsers = newChatUsers;
+                    renderChatsList();
+                }
+            }
+        } catch(e) {
+            console.error(e);
+        }
     }
 
-    function renderUsersList() {
+    function renderChatsList() {
         const container = document.getElementById('chatsList');
-        const search = document.getElementById('searchUsers').value.toLowerCase();
-        const filtered = allUsers.filter(u => u.id !== currentUser?.userId && u.username.toLowerCase().includes(search));
-        if(!filtered.length) { container.innerHTML = '<div style="padding:20px">Нет пользователей</div>'; return; }
-        container.innerHTML = filtered.map(u => `
+        const chatsTitle = document.getElementById('chatsTitle');
+
+        if(chatUsers.length === 0) {
+            chatsTitle.style.display = 'none';
+            container.innerHTML = '<div style="padding:20px; text-align:center; color:#8e98a3;">Нет чатов</div>';
+            return;
+        }
+
+        chatsTitle.style.display = 'block';
+        container.innerHTML = chatUsers.map(u => `
             <div class="chat-item ${selectedUser?.id === u.id ? 'active' : ''}" onclick="selectUser(${u.id}, '${escapeHtml(u.username)}')">
-                <div class="chat-avatar">${u.username[0].toUpperCase()}</div>
+                <div class="chat-avatar">${escapeHtml(u.username[0].toUpperCase())}</div>
                 <div><strong>${escapeHtml(u.username)}</strong></div>
             </div>
         `).join('');
     }
 
-    function filterUsers() { renderUsersList(); }
+    async function performSearch() {
+        const searchTerm = document.getElementById('searchUsers').value.trim();
+        const searchResultsDiv = document.getElementById('searchResults');
+        const chatsTitle = document.getElementById('chatsTitle');
+
+        if (!searchTerm) {
+            searchResultsDiv.style.display = 'none';
+            chatsTitle.style.display = chatUsers.length > 0 ? 'block' : 'none';
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/searchUsers?currentUserId=${currentUser.userId}&query=${encodeURIComponent(searchTerm)}`);
+            if(res.ok) {
+                const results = await res.json();
+                const newUsers = results.filter(u =>
+                    u.id !== currentUser.userId &&
+                    !chatUsers.some(chat => chat.id === u.id)
+                );
+
+                if (newUsers.length > 0) {
+                    searchResultsDiv.style.display = 'block';
+                    chatsTitle.style.display = 'none';
+                    searchResultsDiv.innerHTML = `
+                        <div class="section-title">Результаты поиска</div>
+                        ${newUsers.map(u => `
+                            <div class="search-result-item">
+                                <div>
+                                    <strong>${escapeHtml(u.username)}</strong>
+                                    <div style="font-size:0.7rem; color:#8e98a3;">ID: ${u.id}</div>
+                                </div>
+                                <button class="start-chat-btn" onclick="startNewChat(${u.id}, '${escapeHtml(u.username)}')">Написать</button>
+                            </div>
+                        `).join('')}
+                    `;
+                } else {
+                    searchResultsDiv.style.display = 'block';
+                    searchResultsDiv.innerHTML = `<div class="section-title" style="text-align:center;">Пользователь не найден</div>`;
+                }
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    async function startNewChat(userId, username) {
+        const newChatUser = { id: userId, username: username, hasChat: true };
+        chatUsers.push(newChatUser);
+        renderChatsList();
+
+        document.getElementById('searchUsers').value = '';
+        document.getElementById('searchResults').style.display = 'none';
+        document.getElementById('chatsTitle').style.display = 'block';
+
+        await selectUser(userId, username);
+    }
 
     function getStatusIcon(status) {
         switch(status) {
@@ -531,120 +1180,88 @@
         }
     }
 
-    // ========== ТВОИ API ==========
     async function callMarkDelivered(senderId, receiverId) {
         try {
             await fetch(`${API_BASE}/markDelivered?senderId=${senderId}&receiverId=${receiverId}`, { method: 'POST' });
-            return true;
-        } catch(e) { return false; }
+        } catch(e) {}
     }
 
-    async function callMarkRead(senderId, receiverId, messageId) {
+    async function callMarkRead(senderId, receiverId) {
         try {
-            // markRead помечает ВСЕ сообщения от senderId к receiverId как прочитанные
             await fetch(`${API_BASE}/markRead?senderId=${senderId}&receiverId=${receiverId}`, { method: 'POST' });
-            return true;
-        } catch(e) { return false; }
+        } catch(e) {}
     }
 
-    // Проверка видимости сообщений и отметка прочитанных
     function checkVisibleMessages() {
         if(!selectedUser) return;
-
         const messagesArea = document.getElementById('messagesArea');
         const messages = messagesArea.querySelectorAll('.message.received');
-        const scrollTop = messagesArea.scrollTop;
-        const clientHeight = messagesArea.clientHeight;
-
-        let maxVisibleMessageId = null;
-        let maxVisibleTimestamp = 0;
-
+        let hasVisible = false;
         messages.forEach(msg => {
             const rect = msg.getBoundingClientRect();
             const containerRect = messagesArea.getBoundingClientRect();
-            const isVisible = rect.top >= containerRect.top && rect.top <= containerRect.bottom;
-
-            if(isVisible) {
+            if (rect.top >= containerRect.top && rect.top <= containerRect.bottom) {
                 const msgId = msg.getAttribute('data-msg-id');
                 if(msgId && !readMessageIds.has(msgId)) {
-                    const timestamp = parseInt(msg.getAttribute('data-timestamp') || '0');
-                    if(timestamp > maxVisibleTimestamp) {
-                        maxVisibleTimestamp = timestamp;
-                        maxVisibleMessageId = msgId;
-                    }
+                    hasVisible = true;
+                    readMessageIds.add(msgId);
                 }
             }
         });
-
-        // Если есть видимое непрочитанное сообщение, отмечаем его и все предыдущие как прочитанные
-        if(maxVisibleMessageId) {
-            // Отмечаем через API все сообщения от этого пользователя
-            callMarkRead(selectedUser.id, currentUser.userId, maxVisibleMessageId).then(() => {
-                // Обновляем статусы в UI
-                setTimeout(() => loadMessages(true), 100);
-            });
-            readMessageIds.add(maxVisibleMessageId);
+        if(hasVisible) {
+            callMarkRead(selectedUser.id, currentUser.userId);
+            setTimeout(() => loadMessages(true), 100);
         }
     }
 
     async function selectUser(userId, username) {
+        if (selectedUser?.id === userId) return;
+
         selectedUser = { id: userId, username };
         document.getElementById('chatUserName').innerHTML = username;
         document.getElementById('chatAvatar').innerHTML = username[0].toUpperCase();
         document.getElementById('messageInputArea').style.display = 'flex';
-        renderUsersList();
+        renderChatsList();
         readMessageIds.clear();
-
-        // При открытии чата отмечаем сообщения как доставленные (НО НЕ КАК ПРОЧИТАННЫЕ)
+        lastMessagesHash = '';
         await callMarkDelivered(currentUser.userId, selectedUser.id);
-
         await loadMessages(false);
-
-        // Добавляем обработчик скролла для отслеживания прочитанных сообщений
         const messagesArea = document.getElementById('messagesArea');
         messagesArea.removeEventListener('scroll', checkVisibleMessages);
-        messagesArea.addEventListener('scroll', () => {
-            setTimeout(checkVisibleMessages, 100);
-        });
+        messagesArea.addEventListener('scroll', () => setTimeout(checkVisibleMessages, 100));
         setTimeout(checkVisibleMessages, 500);
     }
 
     async function loadMessages(keepPos = true) {
         if(!selectedUser) return;
-
         const area = document.getElementById('messagesArea');
         let oldScrollTop = 0, oldScrollHeight = 0, wasNearBottom = false;
-
         if(keepPos && area) {
             oldScrollTop = area.scrollTop;
             oldScrollHeight = area.scrollHeight;
             wasNearBottom = (oldScrollHeight - oldScrollTop - area.clientHeight) < 80;
         }
-
         try {
             const res = await fetch(`${API_BASE}/getMessages?senderId=${currentUser.userId}&receiverId=${selectedUser.id}`);
             const msgs = await res.json();
-
             if(msgs.error || !Array.isArray(msgs)) return;
 
-            // Проверяем, есть ли новые сообщения
-            const existingIds = new Set();
-            document.querySelectorAll('.message[data-msg-id]').forEach(el => {
-                existingIds.add(el.getAttribute('data-msg-id'));
-            });
+            const newHash = msgs.map(m => `${m.id}_${m.status}`).join(',');
 
-            const newIds = new Set(msgs.map(m => m.id.toString()));
-            const hasNewMessages = existingIds.size !== newIds.size;
+            if (newHash !== lastMessagesHash) {
+                const oldMessageIds = new Set(Array.from(area.querySelectorAll('.message[data-msg-id]')).map(el => el.getAttribute('data-msg-id')));
+                const newMessageIds = new Set(msgs.map(m => m.id.toString()));
 
-            if(hasNewMessages) {
+                const newMessages = msgs.filter(m => !oldMessageIds.has(m.id.toString()));
+
                 area.innerHTML = msgs.map(msg => {
                     const isSent = msg.senderId === currentUser.userId;
                     const time = new Date(msg.sendAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
                     const status = msg.status || 'Sent';
-                    const timestamp = new Date(msg.sendAt).getTime();
+                    const isNew = newMessages.some(nm => nm.id === msg.id);
 
                     return `
-                        <div class="message ${isSent ? 'sent' : 'received'}" data-msg-id="${msg.id}" data-timestamp="${timestamp}">
+                        <div class="message ${isSent ? 'sent' : 'received'} ${isNew ? 'message-new' : ''}" data-msg-id="${msg.id}">
                             <div class="message-bubble">${escapeHtml(msg.text)}</div>
                             <div class="message-footer">
                                 <span class="message-time">${time}</span>
@@ -653,32 +1270,14 @@
                         </div>
                     `;
                 }).join('');
-            } else {
-                // Обновляем только статусы отправленных сообщений
-                for(let msg of msgs) {
-                    if(msg.senderId === currentUser.userId) {
-                        const statusSpan = document.querySelector(`.message[data-msg-id="${msg.id}"] .status-icon`);
-                        if(statusSpan && msg.status) {
-                            const newIcon = getStatusIcon(msg.status);
-                            if(statusSpan.innerHTML !== newIcon) {
-                                statusSpan.innerHTML = newIcon;
-                            }
-                        }
-                    }
-                }
-            }
 
-            if(keepPos && area) {
-                if(wasNearBottom) {
+                lastMessagesHash = newHash;
+
+                if(keepPos && area && wasNearBottom) {
                     area.scrollTop = area.scrollHeight;
-                } else if(oldScrollTop > 0 && hasNewMessages) {
-                    area.scrollTop = oldScrollTop + (area.scrollHeight - oldScrollHeight);
                 }
             }
-
-            // Проверяем видимые сообщения для отметки прочитанных
             setTimeout(checkVisibleMessages, 100);
-
         } catch(e) { console.error(e); }
     }
 
@@ -689,9 +1288,8 @@
         const tempId = 'temp_' + Date.now();
         const time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
         const area = document.getElementById('messagesArea');
-
         const tempHtml = `
-            <div class="message sent" data-temp="${tempId}">
+            <div class="message sent message-new" data-temp="${tempId}">
                 <div class="message-bubble">${escapeHtml(text)}</div>
                 <div class="message-footer">
                     <span class="message-time">${time}</span>
@@ -713,16 +1311,11 @@
                     text: text
                 })
             });
-
             if(res.ok) {
                 document.querySelector(`[data-temp="${tempId}"]`)?.remove();
+                lastMessagesHash = '';
                 await loadMessages(false);
-
-                // Отмечаем как доставленные (но не прочитанные)
-                setTimeout(async () => {
-                    await callMarkDelivered(currentUser.userId, selectedUser.id);
-                    await loadMessages(true);
-                }, 500);
+                await callMarkDelivered(currentUser.userId, selectedUser.id);
             } else {
                 const tempSpan = document.querySelector(`[data-temp="${tempId}"] .status-icon`);
                 if(tempSpan) tempSpan.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#b91c1c;"></i>';
@@ -735,12 +1328,10 @@
         pollInterval = setInterval(async () => {
             if(selectedUser && currentUser) {
                 await loadMessages(true);
-                // Проверяем доставку
                 await callMarkDelivered(currentUser.userId, selectedUser.id);
-                // Проверяем прочитанные через видимость
                 checkVisibleMessages();
             }
-            await loadUsers();
+            await loadChatUsers();
         }, 3000);
     }
 
@@ -753,8 +1344,8 @@
             });
             const d = await r.json();
             if(r.ok) {
-                displayMessage('signupMessage', 'Успешно! Теперь войдите.', false);
-                setTimeout(() => { document.getElementById('switchToLogin').click(); }, 1300);
+                displayMessage('signupMessage', 'Регистрация успешна', false);
+                setTimeout(() => document.getElementById('switchToLogin').click(), 1300);
             } else displayMessage('signupMessage', d.error || 'Ошибка', true);
         } catch(e) { displayMessage('signupMessage', 'Ошибка сети', true); }
     }
@@ -771,10 +1362,12 @@
                 currentUser = { userId: d.userId, username: d.username };
                 localStorage.setItem('tether_session', JSON.stringify(currentUser));
                 showMessenger();
-                await loadUsers();
+                await loadChatUsers();
                 startPolling();
+                await updateLastLogin(currentUser.userId);
+                showNotification(`Добро пожаловать, ${d.username}!`, 'success');
             } else displayMessage('loginMessage', d.message || 'Ошибка входа', true);
-        } catch(e) { displayMessage('loginMessage', 'Сетевая ошибка', true); }
+        } catch(e) { displayMessage('loginMessage', 'Ошибка сети', true); }
     }
 
     function displayMessage(containerId, msg, isErr) {
@@ -793,15 +1386,7 @@
         });
     }
 
-    function logout() {
-        localStorage.clear();
-        currentUser = null;
-        selectedUser = null;
-        readMessageIds.clear();
-        if(pollInterval) clearInterval(pollInterval);
-        showAuthForms();
-    }
-
+    // Event listeners
     document.getElementById('loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
         signInRequest(
@@ -832,6 +1417,14 @@
     document.getElementById('showLoginNavBtn').onclick = () => document.getElementById('switchToLogin').click();
     document.getElementById('showSignupNavBtn').onclick = () => document.getElementById('switchToSignup').click();
     document.getElementById('logoutBtn').onclick = logout;
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('profileModal');
+        if (event.target === modal) {
+            closeProfileModal();
+        }
+    }
 
     loadSession();
 </script>
