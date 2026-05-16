@@ -31,12 +31,12 @@ cd tether-backend
 3. **Настрой переменные окружения:**
    Создай файл `.env` в корневой папке проекта и скопируй туда настройки:
 ```sql
-SERVER_IP=127.0.0.1 //Твой IPv4 или localhost
-SERVER_PORT=5000
-DB_SOURCE=.
-DB_NAME= //твоя бд
-DB_INTEGRATED_SECURITY=true
+DB_SOURCE=localhost
+DB_NAME=Tether
 DB_TRUST_CERTIFICATE=true
+DB_TIMEOUT=30
+DB_INTEGRATED_SECURITY=true
+SERVER_PORT=5000
 ```
 4. **Установи библиотеки в корневой папке проекта:**
 ```bash
@@ -48,7 +48,11 @@ dotnet add package Microsoft.Data.SqlClient
    dotnet restore
    dotnet run
 ```
-
+6. **Если хочешь проверить с другом, качай node.js и библиотеку:**
+```bash
+npm install -g localtunnel
+lt --port 5000
+```
 ---
 
 ## 🙌 Для тех, кто хочет помочь
